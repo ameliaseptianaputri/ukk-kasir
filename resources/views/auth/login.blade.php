@@ -22,7 +22,7 @@
                     timer: 2000,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = "{{ route('login') }}"; // Ganti dengan route tujuan setelah login
+                    window.location.href = "{{ route('login') }}"; 
                 });
             </script>
         @endif

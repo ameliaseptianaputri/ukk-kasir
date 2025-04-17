@@ -36,7 +36,6 @@
         </div>
     </div>
 
-    <!-- Tombol Selanjutnya tetap di bawah -->
     <form id="checkoutForm" action="{{ route('penjualan.checkout') }}" method="POST">
         @csrf
         <input type="hidden" name="produk_data" id="produkDataInput">
@@ -45,8 +44,6 @@
         </div>
     </form>
 
-
-    <!-- Script fungsi + - dan validasi tombol -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const produks = @json($produks);
@@ -104,8 +101,6 @@
 
                 document.getElementById('produkDataInput').value = JSON.stringify(selected);
             });
-
-
         });
     </script>
 @endsection

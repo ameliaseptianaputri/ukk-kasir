@@ -43,13 +43,11 @@
                                 <td>{{ $produk->stok }}</td>
                                 <td>
                                     <a href="{{ route('produk.edit', $produk->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                    <!-- Tombol Edit Stok -->
                                     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
                                         data-target="#editStokModal{{ $produk->id }}">
                                         Edit Stok
                                     </button>
 
-                                    <!-- Modal -->
                                     <div class="modal fade" id="editStokModal{{ $produk->id }}" tabindex="-1" role="dialog"
                                         aria-labelledby="editStokModalLabel{{ $produk->id }}" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -74,16 +72,13 @@
 
                                                         <div class="form-group">
                                                             <label>Stok</label>
-                                                            <input type="number" class="form-control" name="stok"
-                                                                value="{{ $produk->stok }}" required>
-                                                            {{-- <input type="number" class="form-control" name="stok" value="{{ $produk->stok }}" required min="0" max="1000000000"> --}}
+                                                            <input type="number" class="form-control" name="stok" value="{{ $produk->stok }}" required min="0" max="100000000000000000000"> 
 
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="submit" class="btn btn-primary">Update Stok</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                                                     </div>
                                                 </form>
                                             </div>

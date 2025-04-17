@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Member extends Model
 {
     protected $fillable = 
-    ['
-        nama', 
+    [
+        'nama', 
         'no_telp', 
         'poin'
     ];
-    // Member.php
+
     public function penjualans()
     {
         return $this->hasMany(Penjualan::class);

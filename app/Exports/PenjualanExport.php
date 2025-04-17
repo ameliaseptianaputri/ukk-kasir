@@ -40,7 +40,6 @@ class PenjualanExport implements FromCollection, WithHeadings, WithMapping
         $nama = $isMember ? $penjualan->member->nama : 'Bukan Member';
         $nohp = $isMember ? $penjualan->member->no_hp : '-';
         $poin = $isMember ? $penjualan->member->poin : '-';
-
         return [
             $nama,
             $nohp,
@@ -53,4 +52,4 @@ class PenjualanExport implements FromCollection, WithHeadings, WithMapping
             $penjualan->tanggal_penjualan,
         ];
     }
-
+} 

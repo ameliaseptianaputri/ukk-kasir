@@ -48,7 +48,7 @@
 
                                             deleteForms.forEach(form => {
                                                 form.addEventListener("submit", function (e) {
-                                                    e.preventDefault(); // Mencegah submit otomatis
+                                                    e.preventDefault(); 
 
                                                     Swal.fire({
                                                         title: "Yakin ingin menghapus?",
@@ -61,7 +61,7 @@
                                                         cancelButtonText: "Batal"
                                                     }).then((result) => {
                                                         if (result.isConfirmed) {
-                                                            form.submit(); // Jika dikonfirmasi, baru form dikirim
+                                                            form.submit(); 
                                                         }
                                                     });
                                                 });

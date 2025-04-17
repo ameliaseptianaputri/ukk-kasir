@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('no_telp')->unique();
             $table->integer('poin')->default(0);
             $table->timestamps();
-            $table->engine = 'InnoDB'; // Pastikan engine adalah InnoDB
+            $table->engine = 'InnoDB'; 
         });
     }
 

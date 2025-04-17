@@ -97,7 +97,6 @@ class PenjualanController extends Controller
         if ($request->status === 'member') {
             $member = Member::where('no_telp', $request->no_telp)->first();
 
-            // Daftarkan member baru jika belum ada
             if (!$member) {
                 $request->validate([
                     'nama_member' => 'required|string|max:255',
@@ -114,21 +113,16 @@ class PenjualanController extends Controller
             $poinDariTransaksi = round($totalHarga * 0.01);
             $poinDipakai = 0;
             
-            // Transaksi pertama gak boleh pakai poin
             $isFirstTransaction = $member->penjualans()->count() === 0;
             
             if (!$isFirstTransaction && $gunakanPoin) {
-                // Gabungkan poin lama + poin dari transaksi SEKARANG
                 $totalPoinGabungan = $totalPoinSebelumTransaksi + $poinDariTransaksi;
             
-                // Hitung poin yang bisa dipakai
                 $poinDipakai = min($totalPoinGabungan, $totalHarga);
                 $totalHarga -= $poinDipakai;
             
-                // Karena poin langsung habis dipakai
                 $member->poin = $totalPoinGabungan - $poinDipakai;
             } else {
-                // Kalo gak pake poin, baru tambahin ke member
                 $member->poin += $poinDariTransaksi;
             }
             $member->save();
@@ -142,8 +136,8 @@ class PenjualanController extends Controller
 
         $kembalian = $request->total_bayar - $totalHarga;
 
-        // Simpan penjualan (tanpa member_id)
         $penjualan = Penjualan::create([
+            'nama_pelanggan'  => $member ? $member->nama : 'Bukan Member',
             'tanggal_penjualan' => now(),
             'status' => $request->status,
             'member_id' => $member->id ?? null,
@@ -155,8 +149,6 @@ class PenjualanController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-
-        // Simpan detail produk
         foreach ($produkData as $item) {
             DetailPenjualan::create([
                 'penjualan_id' => $penjualan->id,
@@ -166,13 +158,12 @@ class PenjualanController extends Controller
                 'subtotal' => $item['jumlah'] * $item['harga'],
             ]);
 
-            // Update stok
+            // update stok
             $produk = Produk::find($item['id']);
             $produk->stok -= $item['jumlah'];
             $produk->save();
         }
 
-        // Kirim ke view invoice
         return view('petugas.penjualan.invoice', [
             'invoiceId' => $penjualan->id,
             'tanggal' => $penjualan->tanggal_penjualan,
@@ -193,13 +184,12 @@ class PenjualanController extends Controller
     {
         $penjualan = Penjualan::with('details.produk')->findOrFail($id);
 
-        // Ambil data member berdasarkan no_telp (jika statusnya member)
         $member = null;
         if ($penjualan->status === 'member') {
             $member = $penjualan->member;
         }
 
-        // Hitung kembalian
+        // kembalian
         $hargaSetelahPoin = $penjualan->total_harga - ($penjualan->poin_digunakan ?? 0);
         $kembalian = $penjualan->total_bayar - $hargaSetelahPoin;
 
@@ -311,22 +301,12 @@ class PenjualanController extends Controller
             'produkColors'
         ));
     }
-//     public function export(Request $request)
-// {
-//     // Ambil filter dari query string
-//     $tanggal = $request->input('tanggal'); // format: YYYY-MM-DD
-//     $bulan = $request->input('bulan');     // format: 1 - 12
-//     $tahun = $request->input('tahun');     // format: YYYY
+public function export(Request $request)
+{
+    $tanggal = $request->input('tanggal');
+    $bulan = $request->input('bulan');
+    $tahun = $request->input('tahun');
 
-//     return Excel::download(new PenjualanExport($tanggal, $bulan, $tahun), 'penjualan.xlsx');
-// }
-// public function export(Request $request)
-// {
-//     $tanggal = $request->input('tanggal');
-//     $bulan = $request->input('bulan');
-//     $tahun = $request->input('tahun');
-
-//     return Excel::download(new PenjualanExport($tanggal, $bulan, $tahun), 'penjualan.xlsx');
-// }
-
+    return Excel::download(new PenjualanExport($tanggal, $bulan, $tahun), 'penjualan.xlsx');
+}
 }

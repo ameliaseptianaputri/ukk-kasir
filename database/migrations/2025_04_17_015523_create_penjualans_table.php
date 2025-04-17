@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pelanggan')->nullable(); // untuk non-member
+            $table->string('nama_pelanggan')->nullable(); 
             $table->enum('status', ['member', 'non']);
-            $table->unsignedBigInteger('member_id')->nullable(); // Ensure it's unsignedBigInteger
-            $table->foreign('member_id')->references('id')->on('members')->onDelete('set null'); // Add foreign key constraint manually
+            $table->unsignedBigInteger('member_id')->nullable(); 
+            $table->foreign('member_id')->references('id')->on('members')->onDelete('set null'); 
             $table->date('tanggal_penjualan');
-            $table->integer('total_harga');
-            $table->integer('total_bayar');
-            $table->integer('kembalian')->nullable();
+            $table->unsignedBigInteger('total_harga');
+            $table->unsignedBigInteger('total_bayar');  
+            $table->unsignedBigInteger('kembalian')->nullable();
             $table->integer('poin_digunakan')->nullable();
             $table->integer('poin_didapat')->default(0);
             $table->unsignedBigInteger('user_id'); // kasir

@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     public function index()
 {
-    $users = User::where('is_seeded', false)->get();
+    $users = User::all();
     return view('admin.user.index', compact('users'));
 }
 
@@ -55,48 +55,44 @@ public function create()
     }
 
     public function update(Request $request, $id)
-{
-    try {
-        $user = User::findOrFail($id);
+    {
+        try {
+            $user = User::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'role' => 'required|in:admin,petugas',
-            'password' => 'nullable|min:4', // Password opsional, minimal 4 karakter jika diisi
-        ]);
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'role' => 'required|in:admin,petugas',
+                'password' => 'nullable|min:4', // Password opsional, minimal 4 karakter jika diisi
+            ]);
 
-        // Data yang akan diperbarui
-        $updateData = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-        ];
+            // Data yang akan diperbarui
+            $updateData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => $request->role,
+            ];
 
-        // Jika password diisi, maka tambahkan ke updateData
-        if ($request->filled('password')) {
-            $updateData['password'] = Hash::make($request->password);
+            if ($request->filled('password')) {
+                $updateData['password'] = Hash::make($request->password);
+            }
+
+            $user->update($updateData);
+
+            return redirect()->route('user.index')->with('success', 'User berhasil diperbarui');
+        } catch (\Exception $e) {
+            return redirect()->route('user.index')->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
         }
-
-        $user->update($updateData);
-
-        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui');
-    } catch (\Exception $e) {
-        return redirect()->route('user.index')->with('error', 'Gagal memperbarui user: ' . $e->getMessage());
     }
-}
 
 public function destroy($id)
-{
-    try {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
-    } catch (\Exception $e) {
-        return redirect()->route('user.index')->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('user.index')->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
     }
-}
-
-
-
 }

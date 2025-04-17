@@ -29,7 +29,6 @@ class AuthController extends Controller
                 return redirect()->route('petugas.dashboard')->with('success', 'Login berhasil! Selamat datang, ' . $user->name);
             }
 
-            // Role tidak dikenali
             Auth::logout();
             return redirect()->route('login')->withErrors(['email' => 'Role tidak dikenali.']);
         }
@@ -46,7 +45,6 @@ class AuthController extends Controller
     {
         Auth::logout(); // Logout user
 
-        // Hapus session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

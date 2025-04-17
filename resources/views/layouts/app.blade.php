@@ -59,7 +59,7 @@
                         class="fas fa-fw fa-box"></i><span>Produk</span></a></li>
             <li class="nav-item "><a class="nav-link"
                     href="{{ auth()->user()->hasRole('admin') ? route('admin.penjualan.index') : route('petugas.penjualan.index') }}"><i
-                        class="fas fa-fw fa-shopping-cart"></i><span>Pembelian</span></a></li>
+                        class="fas fa-fw fa-shopping-cart"></i><span>Penjualan</span></a></li>
             @if (Auth::user()->role === 'admin')
 
                 <li class="nav-item "><a class="nav-link" href="{{ route('user.index') }}"><i

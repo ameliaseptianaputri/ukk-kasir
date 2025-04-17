@@ -15,14 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('image')->nullable();
             $table->string('nama_produk');
-            $table->decimal('harga', 10, 2);
-            $table->integer('stok');
-            // $table->bigInteger('stok')->unsigned(); 
-            $table->string('aksi')->nullable(); // Menambahkan kolom aksi
+            $table->decimal('harga', 15, 2); 
+            $table->bigInteger('stok')->unsigned(); 
+            $table->string('aksi')->nullable(); 
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

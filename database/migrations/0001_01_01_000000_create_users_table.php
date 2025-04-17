@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'petugas']);
-            $table->string('aksi')->nullable(); // Menambahkan kolom aksi
-            $table->boolean('is_seeded')->default(false); // Tambahkan kolom ini
+            $table->string('aksi')->nullable(); 
+            $table->boolean('is_seeded')->default(true); 
             $table->rememberToken();
             $table->timestamps();
         });

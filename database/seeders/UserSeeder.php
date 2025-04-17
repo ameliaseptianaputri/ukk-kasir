@@ -18,22 +18,22 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('1234'),  // Admin harus login dengan password
-                'role' => 'admin',  // Role admin
-                'is_seeded' => true, // Tandai sebagai user dari seeder
+                'password' => Hash::make('1234'), 
+                'role' => 'admin',  
+                'is_seeded' => true, 
 
             ],
             [
                 'name' => 'petugas',
                 'email' => 'petugas@gmail.com',
-                'password' => Hash::make('1234'),  // Petugas harus login dengan password
-                'role' => 'petugas',  // Role Petugas
-                'is_seeded' => true, // Tandai sebagai user dari seeder
+                'password' => Hash::make('1234'),  
+                'role' => 'petugas',  
+                'is_seeded' => true, 
 
             ]
         ];
         foreach ($users as $user) {
-            User::create($user); // Menyimpan data ke database
+            User::create($user); 
         }
     }
 }

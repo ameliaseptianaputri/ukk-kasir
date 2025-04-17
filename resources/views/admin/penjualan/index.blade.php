@@ -4,11 +4,9 @@
 
 @section('content')
     <h1 class="h3 mb-4 text-dark font-weight-bold">Penjualan</h1>
-    {{-- z --}}
     <div class="d-flex justify-content-between mb-3">
         <a href="{{ route('penjualan.export') }}" class="btn btn-success">Export  Excel</a>
     </div>    
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -37,7 +35,7 @@
                                 </td>
                                 <td>{{ $penjualan->tanggal_penjualan }}</td>
                                 <td>Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}</td>
-                                <td>{{ $penjualan->user->name ?? '-' }}</td> {{-- pastikan ada relasi dengan user --}}
+                                <td>{{ $penjualan->user->name ?? '-' }}</td> 
                                 <td>
                                     <a href="#" class="btn btn-sm btn-warning" data-toggle="modal"
                                         data-target="#modalDetail{{ $penjualan->id }}">Lihat</a>

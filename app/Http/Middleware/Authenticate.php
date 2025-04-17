@@ -11,7 +11,6 @@ class Authenticate extends Middleware
     protected function redirectTo($request)
 {
     if (!$request->expectsJson()) {
-        // Gunakan flash untuk pesan yang hanya ditampilkan satu kali
         session()->flash('error', 'Silakan login terlebih dahulu!');
         return route('login');
     }
