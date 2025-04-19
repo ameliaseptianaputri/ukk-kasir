@@ -5,10 +5,11 @@
 @section('content')
 <div class="container mt-4">
 
-    <div class="d-flex justify-content-between mb-3">
+    <div class="d-flex mb-3">
         <a href="{{ route('petugas.penjualan.index') }}" class="btn btn-secondary">Kembali</a>
-        <a href="{{ route('penjualan.pdf', $invoiceId) }}" class="btn btn-primary" target="_blank">Unduh Invoice</a>
+        <a href="{{ route('penjualan.pdf', $invoiceId) }}" class="btn btn-primary ml-2" target="_blank">Unduh Invoice</a>
     </div>
+    
 
     <div class="card p-3 mb-3">
         <h5>Invoice-#{{ $invoiceId ?? 'Preview' }}</h5>
@@ -55,13 +56,14 @@
         @endif
         <p><strong>Kasir:</strong> {{ auth()->user()->name }}</p>
         <p><strong>Kembalian:</strong> Rp {{ number_format($kembalian, 0, ',', '.') }}</p>
-    </div>
-
-    <div class="text-right mt-3">
-        <div class="p-3" style="background-color: #dee2e6; display: inline-block;">
-            <h5><strong>Total:</strong> Rp {{ number_format($totalHarga, 0, ',', '.') }}</h5>
+        <div class="text-right mt-3">
+            <div class="p-3" style="background-color: #dee2e6; display: inline-block;">
+                <h5><strong>Total:</strong> Rp {{ number_format($totalHarga, 0, ',', '.') }}</h5>
+            </div>
         </div>
     </div>
+
+
 
 </div>
 @endsection

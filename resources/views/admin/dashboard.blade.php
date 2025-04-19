@@ -1,13 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard A')
-
 @section('content')
 <div class="container">
     <h2 class="mb-4">Dashboard Admin</h2>
 
     <div class="row">
-        {{-- Bar Chart --}}
+        {{-- Bar Chart: Penjualan Harian --}}
         <div class="col-md-6">
             <div class="card shadow mb-4">
                 <div class="card-header">
@@ -19,7 +17,7 @@
             </div>
         </div>
 
-        {{-- Pie Chart--}}
+        {{-- Pie Chart: Persentase Produk --}}
         <div class="col-md-6">
             <div class="card shadow mb-4">
                 <div class="card-header">

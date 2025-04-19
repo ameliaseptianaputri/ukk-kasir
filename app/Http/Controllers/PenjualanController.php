@@ -22,18 +22,36 @@ class PenjualanController extends Controller
         $this->middleware('role:admin,petugas')->only(['show', 'index']);
     }
 
-    public function index()
-    {
-        Log::info('User role: ' . auth()->user()->role); // Log role pengguna untuk debugging
+    public function index(Request $request)
+{
+    $tanggal = $request->input('tanggal');
+    $bulan = $request->input('bulan');
+    $tahun = $request->input('tahun');
 
-        $penjualans = Penjualan::all();
+    $query = Penjualan::with(['member', 'details.produk', 'user']);
 
-        if (auth()->user()->hasRole('petugas')) {
-            return view('petugas.penjualan.index', compact('penjualans'));
-        } else {
-            return view('admin.penjualan.index', compact('penjualans'));
-        }
+    if ($tanggal) {
+        $query->whereDate('tanggal_penjualan', $tanggal);
     }
+
+    if ($bulan && $tahun) {
+        $query->whereMonth('tanggal_penjualan', $bulan)
+              ->whereYear('tanggal_penjualan', $tahun);
+    } elseif ($tahun) {
+        $query->whereYear('tanggal_penjualan', $tahun);
+    } elseif ($bulan) {
+        $query->whereMonth('tanggal_penjualan', $bulan);
+    }
+
+    $penjualans = $query->get();
+
+    if (request()->routeIs('admin.penjualan.index')) {
+        return view('admin.penjualan.index', compact('penjualans', 'tanggal', 'bulan', 'tahun'));
+    }
+    
+    return view('petugas.penjualan.index', compact('penjualans', 'tanggal', 'bulan', 'tahun'));    
+    }
+
 
     public function create()
     {
@@ -269,8 +287,9 @@ class PenjualanController extends Controller
     {
         // Data untuk Bar Chart Penjualan Harian
         $penjualanHarian = DB::table('penjualans')
-            ->select(DB::raw('DATE(created_at) as tanggal'), DB::raw('count(*) as jumlah'))
-            ->groupBy(DB::raw('DATE(created_at)'))
+        ->select(DB::raw('DATE(tanggal_penjualan) as tanggal'), DB::raw('count(*) as jumlah'))
+        ->groupBy(DB::raw('DATE(tanggal_penjualan)'))
+        
             ->orderBy('tanggal', 'asc')
             ->get();
 
@@ -301,12 +320,14 @@ class PenjualanController extends Controller
             'produkColors'
         ));
     }
-public function export(Request $request)
+    public function export(Request $request)
 {
     $tanggal = $request->input('tanggal');
     $bulan = $request->input('bulan');
     $tahun = $request->input('tahun');
 
+    // Jika ada filter, maka kirimkan parameter tersebut
     return Excel::download(new PenjualanExport($tanggal, $bulan, $tahun), 'penjualan.xlsx');
 }
+    
 }

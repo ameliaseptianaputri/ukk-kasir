@@ -19,9 +19,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/{id}/unduh-bukti', [PenjualanController::class, 'unduhBukti'])->name('penjualan.pdf');
-    Route::get('penjualan/export-excel', function () {
-        return Excel::download(new PenjualanExport, 'penjualan.xlsx');
-    })->name('penjualan.export');
+    Route::get('penjualan/export-excel', [PenjualanController::class, 'export'])->name('penjualan.export');
     // Route::get('/penjualan/export', [PenjualanController::class, 'export'])->name('penjualan.export');
 
 });

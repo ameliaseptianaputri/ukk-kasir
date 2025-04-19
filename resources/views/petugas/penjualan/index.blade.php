@@ -3,12 +3,51 @@
 @section('title', 'Daftar Pembelian')
 
 @section('content')
-    <h1 class="h3 mb-4 text-dark font-weight-bold">Penjualan</h1>
-    <div class="d-flex justify-content-between mb-3">
-        <a href="{{ route('penjualan.export') }}" class="btn btn-success">Export  Excel</a>
-        <a href="{{ route('penjualan.create') }}" class="btn btn-primary">Tambah Penjualan</a>
+<h1 class="h3 mb-4 text-dark font-weight-bold">Penjualan</h1>
+
+<form method="GET" action="{{ route('petugas.penjualan.index') }}">
+    <div class="d-flex justify-content-between align-items-end flex-wrap mb-3">
+        
+        {{-- KIRI: Input dan tombol --}}
+        <div class="d-flex align-items-end flex-wrap" style="gap: 1rem;">
+            <div>
+                <label for="tanggal" class="form-label">Tanggal</label>
+                <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+            </div>
+
+            <div>
+                <label for="bulan" class="form-label">Bulan</label>
+                <select name="bulan" class="form-control">
+                    <option value="">-- Pilih Bulan --</option>
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
+                            {{ DateTime::createFromFormat('!m', $i)->format('F') }}
+                        </option>
+                    @endfor
+                </select>
+            </div>
+
+            <div>
+                <label for="tahun" class="form-label">Tahun</label>
+                <input type="number" name="tahun" class="form-control" value="{{ request('tahun') }}">
+            </div>
+
+            {{-- Tombol --}}
+            <div class="d-flex align-items-end" style="gap: 0.5rem; margin-left: 1rem;">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <a href="{{ route('petugas.penjualan.index') }}" class="btn btn-secondary">Reset</a>
+                <a href="{{ route('penjualan.export', ['tanggal' => request('tanggal'), 'bulan' => request('bulan'), 'tahun' => request('tahun')]) }}" class="btn btn-success">Export</a>
+            </div>
+        </div>
+
+        <div class="mt-3 mt-md-0">
+            <a href="{{ route('penjualan.create') }}" class="btn btn-primary">Tambah</a>
+        </div>
     </div>
-    
+</form>
+
+
+
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -41,8 +80,9 @@
                                 <td>
                                     <a href="#" class="btn btn-sm btn-warning" data-toggle="modal"
                                         data-target="#modalDetail{{ $penjualan->id }}">Lihat</a>
-                                        <a href="{{ route('penjualan.pdf', $penjualan->id) }}" class="btn btn-sm btn-info">Unduh Bukti</a>
-                                    </td>
+                                    <a href="{{ route('penjualan.pdf', $penjualan->id) }}" class="btn btn-sm btn-info">Unduh
+                                        Bukti</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
